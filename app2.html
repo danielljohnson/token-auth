@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+<style type="text/css">
+a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+</style>
+<script src="lib/angular.js"></script>
+</head>
+<body ng-app="DemoApp">
+
+<div class="container" ng-controller="DemoCtrl">
+    <form ng-submit="login(user)">
+        <p>Username: <input type="text" name="username" ng-model="user.username"></p>
+        <p>Password: <input type="password" name="password" ng-model="user.password"></p>
+        <p><input type="submit" name="submit"></p>
+    </form>
+
+    <p><a ng-href="" ng-click="getBooks()">Get Books</a></p>
+
+    <p class="js-booksList"></p>
+</div>
+
+<script type="text/javascript">
+
+angular.module('DemoApp', []);
+
+angular.module('DemoApp').config(function($httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+});
+
+angular.module('DemoApp').controller('DemoCtrl', function($scope, $http) {
+    $scope.login = function(user) {
+        $http.post('http://localhost:4567/login', user).success(function(response) {
+            $http.defaults.headers.common['X-Auth-Token'] = response.token;
+        });
+    };
+    
+    $scope.getBooks = function() {
+        $http.get('http://localhost:4567/books').success(function(response) {
+            angular.element(document.querySelector('.js-booksList')).text(response.message);
+        });
+        
+        // use this to set headers per request
+        /*
+        $http.get('http://localhost:4567/books', {
+            headers: {
+                'X-Auth-Token': token
+            }
+        });
+        */
+    }
+});
+    
+</script>
+
+</body>
+</html>

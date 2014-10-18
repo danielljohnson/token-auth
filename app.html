@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title></title>
+</head>
+<body>
+
+<form action="" method="post">
+    <p>Username: <input type="text" name="username"></p>
+    <p>Password: <input type="password" name="password"></p>
+    <p><input type="submit" name="submit"></p>
+</form>
+
+<p><a class="js-getBooks" href="#">Get Books</a></p>
+
+<p class="js-booksList"></p>
+
+<script src="lib/jquery-2.1.1.min.js"></script>
+<script type="text/javascript">
+
+var token;
+
+$('form').on('submit', function(e) {
+    e.preventDefault();
+    
+    var params = {
+        username: $('input[name="username"]').val(),
+        password: $('input[name="password"]').val()
+    }
+    
+    $.ajax({
+        url: 'http://localhost:4567/login',
+        type: 'POST',
+        dataType: 'json',
+        data: params,
+        crossDomain: true
+    }).done(function(response) {
+        token = response.token;
+    });
+});
+
+$('.js-getBooks').on('click', function(e) {
+    e.preventDefault();
+    
+    $.ajax({
+        url: 'http://localhost:4567/books',
+        type: 'GET',
+        dataType: 'json',
+        crossDomain: true,
+        headers: {
+            'X-Auth-Token': token
+        }
+    }).done(function(response) {
+        $('.js-booksList').text(response.message);
+    });
+});
+    
+</script>
+
+</body>
+</html>
