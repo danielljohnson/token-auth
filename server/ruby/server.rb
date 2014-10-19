@@ -24,7 +24,7 @@ end
 
 post '/login' do
   # for angular since it sends request as JSON instead of x-www-form-urlencoded
-  params = JSON.parse(request.env['rack.input'].read)
+  # params = JSON.parse(request.env['rack.input'].read)
   
   if params['username'] == settings.username && params['password'] == settings.password
     { token: settings.token }.to_json

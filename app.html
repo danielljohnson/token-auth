@@ -30,7 +30,7 @@ $('form').on('submit', function(e) {
     }
     
     $.ajax({
-        url: 'http://localhost:4567/login',
+        url: 'http://localhost:8080/login',
         type: 'POST',
         dataType: 'json',
         data: params,
@@ -44,7 +44,7 @@ $('.js-getBooks').on('click', function(e) {
     e.preventDefault();
     
     $.ajax({
-        url: 'http://localhost:4567/books',
+        url: 'http://localhost:8080/books',
         type: 'GET',
         dataType: 'json',
         crossDomain: true,
